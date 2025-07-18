@@ -8,34 +8,43 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State var email = ""
-    @State var password = ""
+    @StateObject var viewModel = LoginViewViewModel()
     var body: some View {
-        VStack {
-            //Header
-            HeaderView()
-            // Login Form
-            Form {
-                TextField("Email Address", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                SecureField("Password", text: $password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                Button {
-                    // Attempt log in
-                    
-                } label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundColor(Color.blue)
-                        Text("Log In")
-                            .foregroundColor(Color.white)
-                            .bold()
+            VStack {
+                //Header
+                HeaderView(title: "To Do List",
+                           subtitle: "Get Things Done",
+                           angle: 15,
+                           background: .pink)
+                
+                // Login Form
+                Form {
+                    if !viewModel.errorMessage.isEmpty {
+                        Text(viewModel.errorMessage)
+                            .foregroundColor(Color.red)
                     }
+                    TextField("Email Address", text: $viewModel.email)
+                        .textFieldStyle(DefaultTextFieldStyle())
+                        .autocorrectionDisabled()
+                        .autocapitalization(.none)
+                    SecureField("Password", text: $viewModel.password)
+                        .textFieldStyle(DefaultTextFieldStyle())
+                    TLButton(title: "Login", background: .blue,) {
+                        viewModel.login()
+                    }
+                    .padding()
+                }
+                .offset(y: -50)
+                Spacer()
+                // Create Account
+                VStack {
+                    Text("New Around Here?")
+                    NavigationLink("Create An Account", destination: RegisterView())
+                    .padding(.bottom, 100)
+                    // Show registration
                 }
             }
-            // Create Account
-            Spacer()
-        }
+        
     }
 }
 
