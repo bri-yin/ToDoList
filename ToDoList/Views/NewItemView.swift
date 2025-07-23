@@ -56,10 +56,7 @@ struct NewItemView: View {
         }}
     }
 }
-    
-    #Preview
-    {
-        NewItemView(newItemPresented: Binding(get:
-                                                { return true
-        }, set: {_ in}))
+
+#Preview {
+    NewItemView(newItemPresented: .constant(true))
     }
